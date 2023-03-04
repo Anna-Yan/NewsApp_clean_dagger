@@ -33,7 +33,7 @@ private object VersionsLocal {
 	}
 
 	object Gradle {
-		const val Plugin = "8.0.2"
+		const val Plugin = "7.4.1"
 	}
 
 	object Google {
@@ -127,14 +127,14 @@ object Dependencies {
 				"androidx.navigation:navigation-safe-args-gradle-plugin:${VersionsLocal.AndroidX.Navigation}"
 			const val SafeArgsKt = "androidx.navigation.safeargs.kotlin"
 		}
+	}
 
-		object Dagger {
-			const val Support =
-				"com.google.dagger:dagger-android-support:${VersionsLocal.Dagger.Core}"
+	object Dagger {
+		const val Core =
+			"com.google.dagger:dagger-android-support:${VersionsLocal.Dagger.Core}"
 
-			const val Compiler =
-				"com.google.dagger:dagger-compiler:${VersionsLocal.Dagger.Core}"
-		}
+		const val Compiler =
+			"com.google.dagger:dagger-compiler:${VersionsLocal.Dagger.Core}"
 	}
 
 	object Retrofit {

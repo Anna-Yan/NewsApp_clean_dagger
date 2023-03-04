@@ -1,4 +1,4 @@
-package com.azaqaryan.newsapp.data.remote
+package com.azaqaryan.newsapp.data.source.remote
 
 import com.azaqaryan.newsapp.data.GeneralResult
 import com.azaqaryan.newsapp.data.entity.NewsArticleResponse

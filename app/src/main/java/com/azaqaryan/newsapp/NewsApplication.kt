@@ -1,4 +1,23 @@
 package com.azaqaryan.newsapp
 
-class NewsApplication {
+import android.app.Application
+import android.content.Context
+import com.azaqaryan.newsapp.di.AppComponent
+import com.azaqaryan.newsapp.di.DaggerAppComponent
+
+class NewsApplication : Application() {
+	lateinit var appComponent: AppComponent
+		private set
+
+	override fun onCreate() {
+		super.onCreate()
+
+		appComponent = DaggerAppComponent.create()
+	}
 }
+
+val Context.appComponent: AppComponent
+	get() = when (this) {
+		is NewsApplication -> appComponent
+		else -> this.applicationContext.appComponent
+	}

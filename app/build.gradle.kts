@@ -27,6 +27,18 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${Versions.Remote.BaseUrl}\""
+            )
+        }
+        debug {
+            buildConfigField(
+                "String",
+                "BASE_URL",
+                "\"${Versions.Remote.BaseUrl}\""
+            )
         }
     }
     compileOptions {
@@ -67,6 +79,10 @@ dependencies {
     implementation(Dependencies.Retrofit.ConverterGson)
     implementation(Dependencies.Retrofit.Interceptor.Logging)
 
-    //Coil
+    //Dagger
+    implementation(Dependencies.Dagger.Core)
+    kapt(Dependencies.Dagger.Compiler)
+
+    //Coil: for image loading
     implementation(Dependencies.Coil.Core)
 }
