@@ -13,7 +13,7 @@ class NewsItemsUseCaseImpl @Inject constructor(
 	private val newsRepository: NewsRepository,
 ) : NewsItemsUseCase {
 
-	override suspend fun fetchNews(): GeneralResult<SourceResponse> =
+	override suspend fun fetchSources(): GeneralResult<SourceResponse> =
 		newsRepository.getSources()
 
 	override suspend fun fetchArticles(sourceId: String): Pager<Int, Article> =
