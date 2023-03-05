@@ -1,6 +1,6 @@
 package com.azaqaryan.newsapp.data.entity
 
-data class NewsArticle(
+data class Article(
 	val title: String?,
 	val author: String?,
 	val urlToImage: String?,

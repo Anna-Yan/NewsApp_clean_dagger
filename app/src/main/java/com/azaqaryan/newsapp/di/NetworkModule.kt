@@ -2,6 +2,7 @@ package com.azaqaryan.newsapp.di
 
 import com.azaqaryan.newsapp.BuildConfig
 import com.azaqaryan.newsapp.data.source.remote.NewsService
+import com.azaqaryan.newsapp.domain.api.NewsInterceptor
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -17,6 +18,7 @@ class NetworkModule {
 	@Singleton
 	fun provideOkHttpClient(): OkHttpClient {
 		return OkHttpClient.Builder()
+			.addInterceptor(NewsInterceptor())
 			.addInterceptor(HttpLoggingInterceptor().apply {
 				level = HttpLoggingInterceptor.Level.BODY
 			})

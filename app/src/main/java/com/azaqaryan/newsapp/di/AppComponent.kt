@@ -8,5 +8,5 @@ import javax.inject.Singleton
 @Component(modules = [AppModule::class])
 interface AppComponent {
 	fun inject(activity: MainActivity)
-	//fun inject(fragment: NewsDetailsFragment)
+	//fun inject(fragment: NewsFragment)
 }
