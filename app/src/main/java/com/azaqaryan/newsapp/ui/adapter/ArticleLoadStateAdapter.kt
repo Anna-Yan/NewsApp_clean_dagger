@@ -26,7 +26,6 @@ class ArticleLoadStateAdapter(
 
 	inner class LoadStateViewHolder(private val binding: LayoutListItemProgressBarBinding) :
 		RecyclerView.ViewHolder(binding.root) {
-
 		fun bind(item: LoadState) = with(binding) {
 			listItemProgressBar.isVisible = item is LoadState.Loading
 			listItemRetryButton.isVisible = item is LoadState.Error

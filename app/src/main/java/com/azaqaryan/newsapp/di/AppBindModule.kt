@@ -11,4 +11,5 @@ interface AppBindModule {
 	@Suppress("FunctionName")
 	@Binds
 	fun bindNewsRepositoryImpl_to_NewsRepository(newsRepositoryImpl: NewsRepositoryImpl): NewsRepository
+
 }

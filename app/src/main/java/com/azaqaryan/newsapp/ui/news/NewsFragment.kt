@@ -1,3 +1,6 @@
+package com.azaqaryan.newsapp.ui.news
+
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,16 +13,24 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.azaqaryan.newsapp.data.CommonStates
+import com.azaqaryan.newsapp.appComponent
+import com.azaqaryan.newsapp.CommonStates
 import com.azaqaryan.newsapp.databinding.FragmentNewsBinding
 import com.azaqaryan.newsapp.ui.NewsViewModel
 import com.azaqaryan.newsapp.ui.adapter.NewsAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class NewsFragment : Fragment() {
 	private var binding: FragmentNewsBinding? = null
-	private val viewModel: NewsViewModel by viewModels()
+
+	@Inject
+	lateinit var viewModelFactory: NewsViewModel.Factory
+	private val viewModel: NewsViewModel by viewModels {
+		viewModelFactory
+	}
+
 	private val newsAdapter by lazy {
 		NewsAdapter { newsSource ->
 			val action = NewsFragmentDirections.actionNewsFragmentToArticlesFragment(newsSource.id ?: "")
@@ -43,7 +54,6 @@ class NewsFragment : Fragment() {
 			layoutManager = LinearLayoutManager(requireContext())
 			adapter = this@NewsFragment.newsAdapter
 		}
-
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				viewModel.state.collectLatest { state ->
@@ -59,6 +69,11 @@ class NewsFragment : Fragment() {
 			}
 		}
 		viewModel.fetchSources()
+	}
+
+	override fun onAttach(context: Context) {
+		super.onAttach(context)
+		context.appComponent.inject(this)
 	}
 
 	override fun onDestroy() {

@@ -1,4 +1,4 @@
-package com.azaqaryan.newsapp.data
+package com.azaqaryan.newsapp
 
 enum class CommonStates {
 	NORMAL,

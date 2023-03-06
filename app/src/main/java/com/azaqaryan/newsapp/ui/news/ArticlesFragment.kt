@@ -1,30 +1,41 @@
+package com.azaqaryan.newsapp.ui.news
+
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.navArgs
-import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.azaqaryan.newsapp.data.CommonStates
+import com.azaqaryan.newsapp.appComponent
 import com.azaqaryan.newsapp.databinding.FragmentArticlesBinding
-import com.azaqaryan.newsapp.ui.NewsViewModel
+import com.azaqaryan.newsapp.ui.ArticlesViewModel
 import com.azaqaryan.newsapp.ui.adapter.ArticleAdapter
 import com.azaqaryan.newsapp.ui.adapter.ArticleLoadStateAdapter
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 class ArticlesFragment : Fragment() {
 	private var binding: FragmentArticlesBinding? = null
-	private val viewModel: NewsViewModel by viewModels()
-	private lateinit var articleAdapter: ArticleAdapter
 	private val args: ArticlesFragmentArgs by navArgs()
+
+	@Inject
+	lateinit var viewModelFactory: ArticlesViewModel.ArticlesFactory.Factory
+	private val viewModel: ArticlesViewModel by viewModels {
+		viewModelFactory.create(args.sourceId)
+	}
+
+	override fun onAttach(context: Context) {
+		context.appComponent.inject(this)
+		super.onAttach(context)
+	}
 
 	override fun onCreateView(
 		inflater: LayoutInflater,
@@ -38,26 +49,32 @@ class ArticlesFragment : Fragment() {
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
+
+		val articleAdapter = ArticleAdapter()
 		binding?.recyclerArticles?.apply {
 			layoutManager = LinearLayoutManager(requireContext())
 			adapter = articleAdapter.withLoadStateFooter(
-				footer = ArticleLoadStateAdapter {
-					articleAdapter.retry()
-				}
+				footer = ArticleLoadStateAdapter { articleAdapter.retry() }
 			)
+			setHasFixedSize(true)
 		}
+
+		//fetch articles
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-				viewModel.fetchArticles(args.sourceId).collectLatest { pagingData ->
+				viewModel.fetchArticles().collectLatest { pagingData ->
 					articleAdapter.submitData(pagingData)
 				}
 			}
 		}
-		articleAdapter.addLoadStateListener { state: CombinedLoadStates ->
-			binding?.progressBar?.isVisible =
-				state.refresh == LoadState.Loading && articleAdapter.itemCount == 0
+		//observe loadState
+		articleAdapter.addLoadStateListener { loadStates ->
+			val isListEmpty = articleAdapter.itemCount == 0
+			val isLoading = loadStates.source.refresh is LoadState.Loading
+			// Show/hide the loader view based on the load state
+			binding?.progressBar?.visibility = if (isLoading && isListEmpty) View.VISIBLE else View.GONE
 		}
-	}
+}
 
 	override fun onDestroy() {
 		super.onDestroy()

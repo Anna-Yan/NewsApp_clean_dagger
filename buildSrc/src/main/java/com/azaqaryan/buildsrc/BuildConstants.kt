@@ -14,7 +14,7 @@ object Versions {
 	}
 
 	object Remote {
-		const val BaseUrl = "https://newsapi.org/v2"
+		const val BaseUrl = "https://newsapi.org/v2/"
 	}
 }
 

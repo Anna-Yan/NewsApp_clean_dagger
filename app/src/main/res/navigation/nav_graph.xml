@@ -7,8 +7,8 @@
 
 	<fragment
 		android:id="@+id/newsFragment"
-		android:name="NewsFragment"
-		android:label="fragment_news"
+		android:name="com.azaqaryan.newsapp.ui.news.NewsFragment"
+		android:label="News"
 		tools:layout="@layout/fragment_news">
 		<action
 			android:id="@+id/action_newsFragment_to_articlesFragment"
@@ -17,8 +17,8 @@
 
 	<fragment
 		android:id="@+id/articlesFragment"
-		android:name="ArticlesFragment"
-		android:label="fragment_article"
+		android:name="com.azaqaryan.newsapp.ui.news.ArticlesFragment"
+		android:label="Articles"
 		tools:layout="@layout/fragment_articles">
 		<argument
 			android:name="source_id"
