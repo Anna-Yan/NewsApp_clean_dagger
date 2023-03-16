@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.azaqaryan.newsapp.CommonStates
-import com.azaqaryan.newsapp.GeneralResult
+import com.azaqaryan.newsapp.data.ActionResult
+import com.azaqaryan.newsapp.data.GeneralResult
 import com.azaqaryan.newsapp.data.entity.Source
 import com.azaqaryan.newsapp.domain.usecase.NewsItemsUseCase
 import kotlinx.coroutines.flow.*
@@ -37,8 +38,11 @@ class NewsViewModel @Inject constructor(
 					}
 					setState(CommonStates.NORMAL)
 				}
-				is GeneralResult.Failure -> {
+				is GeneralResult.Error -> {
 					setState(CommonStates.NOT_FOUND)
+				}
+				is GeneralResult.Failure -> {
+					setState(CommonStates.NO_CONNECTION)
 				}
 			}
 		}

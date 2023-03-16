@@ -2,4 +2,14 @@
 	<string name="app_name">News app[A.Zaqaryan]</string>
 	<!-- TODO: Remove or change this placeholder text -->
 	<string name="hello_blank_fragment">Hello blank fragment</string>
+	<string name="toast_no_connection">No connection</string>
+	<string name="action_hide_snackbar">Hide</string>
+	<string name="not_found">Not found technical issue</string>
+	<string name="news_error">News: technical issue</string>
+	<string name="toast_server_error">Server Error</string>
+	<string name="toast_redirection_error">Redirection Error</string>
+	<string name="toast_informational_error">Informational Error</string>
+	<string name="toast_authentication_error">Authentication Error</string>
+	<string name="toast_unknown_error">Unknown Error</string>
+	<string name="toast_client_error">Client Error</string>
 </resources>

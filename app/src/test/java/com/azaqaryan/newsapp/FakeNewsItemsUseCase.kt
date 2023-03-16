@@ -2,6 +2,8 @@ package com.azaqaryan.newsapp
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import com.azaqaryan.newsapp.data.ActionResult
+import com.azaqaryan.newsapp.data.GeneralResult
 import com.azaqaryan.newsapp.data.entity.Article
 import com.azaqaryan.newsapp.data.entity.Source
 import com.azaqaryan.newsapp.domain.usecase.NewsItemsUseCase

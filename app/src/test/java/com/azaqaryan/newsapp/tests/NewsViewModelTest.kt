@@ -1,7 +1,6 @@
 package com.azaqaryan.newsapp.tests
 
 import MainCoroutineRule
-import android.util.Log
 import com.azaqaryan.newsapp.CommonStates
 import com.azaqaryan.newsapp.FakeNewsItemsUseCase
 import com.azaqaryan.newsapp.data.entity.Source

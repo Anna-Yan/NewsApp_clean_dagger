@@ -15,7 +15,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azaqaryan.newsapp.appComponent
 import com.azaqaryan.newsapp.CommonStates
+import com.azaqaryan.newsapp.R
 import com.azaqaryan.newsapp.databinding.FragmentNewsBinding
+import com.azaqaryan.newsapp.showSnackBar
 import com.azaqaryan.newsapp.ui.NewsViewModel
 import com.azaqaryan.newsapp.ui.adapter.NewsAdapter
 import kotlinx.coroutines.flow.collectLatest
@@ -57,7 +59,19 @@ class NewsFragment : Fragment() {
 		viewLifecycleOwner.lifecycleScope.launch {
 			viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
 				viewModel.state.collectLatest { state ->
-					binding?.progressBar?.isVisible = state == CommonStates.PROGRESS
+					when (state) {
+						CommonStates.NORMAL -> {
+							binding?.progressBar?.isVisible = false
+						}
+						CommonStates.PROGRESS -> {
+							binding?.progressBar?.isVisible = true
+						}
+						CommonStates.NO_CONNECTION -> {
+							binding?.progressBar?.isVisible = false
+							binding?.root?.showSnackBar(R.string.toast_no_connection)
+						}
+						else -> throw IllegalArgumentException("${state.name} has not been not supported in this scope.")
+					}
 				}
 			}
 		}

@@ -1,6 +1,7 @@
 package com.azaqaryan.newsapp.di
 
 import com.azaqaryan.newsapp.BuildConfig
+import com.azaqaryan.newsapp.data.entity.error.NetworkResponseAdapterFactory
 import com.azaqaryan.newsapp.data.source.remote.NewsService
 import com.azaqaryan.newsapp.domain.api.NewsInterceptor
 import dagger.Module
@@ -32,6 +33,7 @@ class NetworkModule {
 			.baseUrl(BuildConfig.BASE_URL)
 			.client(okHttpClient)
 			.addConverterFactory(GsonConverterFactory.create())
+			.addCallAdapterFactory(NetworkResponseAdapterFactory())
 			.build()
 	}
 
