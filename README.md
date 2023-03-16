@@ -5,7 +5,7 @@
 - Source title.
 - Description.
 - URL.
-2. When a user taps on any source within the previous screen the app goes step 3: 3. The user sees list of articles with info.
+2. When a user taps on any source within the previous screen the user sees list of articles with info.
 - Article title.
 - Article description.
 - Article thumbnail.
