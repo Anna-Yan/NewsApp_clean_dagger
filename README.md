@@ -14,3 +14,8 @@
 
 
 The documentation https://newsapi.org.
+
+1) I have used Clean Architecture and MVVM design patterns (Clean Arch is generally used with large projects, but I wanted to show the implementation)
+2) For keeping data in orientation changes, I have used ViewModels
+3) I have used Pagination in the article list, as mentioned. (With Paging 3 library)
+4) I wrote unit tests for viewmodels
