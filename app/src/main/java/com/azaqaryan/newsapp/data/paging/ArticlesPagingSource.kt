@@ -25,12 +25,15 @@ class ArticlesPagingSource(
 					val result = response.data.body()
 					val articles = result?.articles ?: listOf()
 
-					val nextPage = if (hasMorePages(result?.totalResults ?: 0, page)) page + 1 else null
+					val totalPages = result?.totalResults?.let { kotlin.math.ceil(it.toDouble() / pageSize).toInt() } ?: 1
+					val prevKey = if (page == 1) null else page - 1
+					val nextKey = if (page < totalPages) page + 1 else null
+					Log.d("anna", "totalPages = $totalPages")
 
 				return LoadResult.Page(
 						data = articles,
-						prevKey = if (page == 1) null else page - 1,
-						nextKey = nextPage
+						prevKey = prevKey,
+						nextKey = nextKey
 					)
 				}
 				is ActionResult.Failure ->
@@ -41,9 +44,6 @@ class ArticlesPagingSource(
 			}
 	}
 
-	private fun hasMorePages(totalPages: Int, currentPage: Int): Boolean {
-		return currentPage < totalPages
-	}
 	override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
 		return state.anchorPosition?.let { anchorPosition ->
 			state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)

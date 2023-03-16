@@ -40,7 +40,7 @@ class ArticleAdapter : PagingDataAdapter<Article, ArticleAdapter.ArticleViewHold
 			override fun areItemsTheSame(
 				oldItem: Article,
 				newItem: Article
-			): Boolean = oldItem.urlToImage == newItem.urlToImage
+			): Boolean = oldItem.id == newItem.id
 
 			override fun areContentsTheSame(
 				oldItem: Article,

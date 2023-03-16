@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.azaqaryan.newsapp.R
 import com.azaqaryan.newsapp.appComponent
 import com.azaqaryan.newsapp.databinding.FragmentArticlesBinding
+import com.azaqaryan.newsapp.makeToast
 import com.azaqaryan.newsapp.showSnackBar
 import com.azaqaryan.newsapp.ui.ArticlesViewModel
 import com.azaqaryan.newsapp.ui.adapter.ArticleAdapter
@@ -84,7 +85,7 @@ class ArticlesFragment : Fragment() {
 						binding?.root?.showSnackBar(R.string.toast_no_connection)
 					}
 					else
-						binding?.root?.showSnackBar(R.string.not_found)
+						context?.makeToast(R.string.not_found)
 				}
 				else -> {}
 			}

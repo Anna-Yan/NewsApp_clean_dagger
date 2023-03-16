@@ -42,7 +42,7 @@ class NewsItemsUseCaseImpl @Inject constructor(
 		)
 
 	companion object {
-		private const val LIST_PAGE_SIZE = 10
+		private const val LIST_PAGE_SIZE = 20
 		private const val INITIAL_PAGE_KEY = 1
 	}
 

@@ -6,4 +6,5 @@ data class Article(
 	val urlToImage: String?,
 	val description: String?,
 	val publishedAt: String?,
+	val id: Long = System.currentTimeMillis() // Unique identifier
 )

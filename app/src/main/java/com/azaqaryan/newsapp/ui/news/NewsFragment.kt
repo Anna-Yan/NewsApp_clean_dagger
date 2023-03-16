@@ -70,7 +70,7 @@ class NewsFragment : Fragment() {
 							binding?.progressBar?.isVisible = false
 							binding?.root?.showSnackBar(R.string.toast_no_connection)
 						}
-						else -> throw IllegalArgumentException("${state.name} has not been not supported in this scope.")
+						else -> {}
 					}
 				}
 			}
