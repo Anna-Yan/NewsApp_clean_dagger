@@ -1,7 +1,9 @@
-package com.azaqaryan.newsapp.data
+package com.azaqaryan.newsapp.data.util
 
-import com.azaqaryan.newsapp.CommonStates
+import com.azaqaryan.newsapp.common.CommonStates
 import com.azaqaryan.newsapp.R
+import com.azaqaryan.newsapp.common.ActionResult
+import com.azaqaryan.newsapp.common.Constants
 import com.azaqaryan.newsapp.data.entity.error.NewsAppException
 import retrofit2.HttpException
 import retrofit2.Response
@@ -10,6 +12,23 @@ import java.net.UnknownHostException
 
 fun <T> mapResponse(response: Response<T>): ActionResult<T> {
 	return when (response.code()) {
+		Constants.ResponseCodes.AUTHENTICATION_ERROR_CODE -> {
+			ActionResult.Error(
+				NewsAppException(
+					messageResId = R.string.toast_authentication_error,
+					state = CommonStates.LOCK
+				)
+			)
+		}
+		Constants.ResponseCodes.USER_EMAIL_EXISTS_CODE -> {
+			ActionResult.Error(NewsAppException(messageResId = R.string.toast_username_already_exists))
+		}
+		Constants.ResponseCodes.USER_BLOCKED_CODE -> {
+			ActionResult.Error(NewsAppException(
+				messageResId = R.string.toast_authentication_error,
+				state = CommonStates.LOCK
+			))
+		}
 		in Constants.Ranges.SERVER_ERROR_RESPONSE_RANGE -> {
 			ActionResult.Error(NewsAppException(
 				messageResId = R.string.toast_server_error,

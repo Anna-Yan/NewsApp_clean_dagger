@@ -6,8 +6,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.azaqaryan.newsapp.data.entity.Article
 import com.azaqaryan.newsapp.databinding.ItemArticleListBinding
+import com.azaqaryan.newsapp.domain.entity.Article
 
 class ArticleAdapter : PagingDataAdapter<Article, ArticleAdapter.ArticleViewHolder>(COMPARATOR) {
 

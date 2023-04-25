@@ -3,8 +3,8 @@ package com.azaqaryan.newsapp.data.paging
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.azaqaryan.newsapp.data.ActionResult
-import com.azaqaryan.newsapp.data.entity.Article
+import com.azaqaryan.newsapp.common.GeneralResult
+import com.azaqaryan.newsapp.domain.entity.Article
 import com.azaqaryan.newsapp.domain.repository.NewsRepository
 
 class ArticlesPagingSource(
@@ -18,12 +18,12 @@ class ArticlesPagingSource(
 		Log.d(TAG, "pageSize= $pageSize")
 
 		when (val response = newsRepository.getArticles(sourceId, page, pageSize)) {
-			is ActionResult.Success -> {
+			is GeneralResult.Success -> {
 				Log.d(TAG, "sourceId= $sourceId")
 				Log.d(TAG, "current page= $page")
-				Log.d(TAG, "totalResults = ${response.data.body()?.totalResults} ")
-				val result = response.data.body()
-				val articles = result?.articles ?: listOf()
+				Log.d(TAG, "totalResults = ${response.data.totalResults} ")
+				val result = response.data
+				val articles = result.articles ?: listOf()
 
 				val totalPages =
 					result?.totalResults?.let { kotlin.math.ceil(it.toDouble() / pageSize).toInt() } ?: 1
@@ -38,10 +38,10 @@ class ArticlesPagingSource(
 					nextKey = nextKey
 				)
 			}
-			is ActionResult.Failure ->
+			is GeneralResult.Failure ->
 				return LoadResult.Error(response.e)
 
-			is ActionResult.Error ->
+			is GeneralResult.Error ->
 				return LoadResult.Error(response.e)
 		}
 	}
@@ -56,4 +56,5 @@ class ArticlesPagingSource(
 	companion object {
 		private const val TAG = "ArticlePagingSource"
 	}
+
 }

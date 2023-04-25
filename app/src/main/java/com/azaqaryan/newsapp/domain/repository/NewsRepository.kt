@@ -1,10 +1,10 @@
 package com.azaqaryan.newsapp.domain.repository
 
-import com.azaqaryan.newsapp.data.ActionResult
-import com.azaqaryan.newsapp.data.entity.ArticlesResponse
-import com.azaqaryan.newsapp.data.entity.SourceResponse
+import com.azaqaryan.newsapp.common.GeneralResult
+import com.azaqaryan.newsapp.domain.entity.ArticlesResponse
+import com.azaqaryan.newsapp.domain.entity.News
 
 interface NewsRepository {
-	suspend fun getSources(): ActionResult<SourceResponse>
-	suspend fun getArticles(sourceId: String, page: Int, pageSize: Int): ActionResult<ArticlesResponse>
+	suspend fun getNews(): GeneralResult<List<News>>
+	suspend fun getArticles(sourceId: String, page: Int, pageSize: Int): GeneralResult<ArticlesResponse>
 }

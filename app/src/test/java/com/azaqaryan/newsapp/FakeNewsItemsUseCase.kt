@@ -2,17 +2,17 @@ package com.azaqaryan.newsapp
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import com.azaqaryan.newsapp.data.ActionResult
-import com.azaqaryan.newsapp.data.GeneralResult
-import com.azaqaryan.newsapp.data.entity.Article
-import com.azaqaryan.newsapp.data.entity.Source
+import com.azaqaryan.newsapp.common.CommonStates
+import com.azaqaryan.newsapp.common.GeneralResult
+import com.azaqaryan.newsapp.data.entity.ArticleSource
+import com.azaqaryan.newsapp.data.entity.NewsSource
 import com.azaqaryan.newsapp.domain.usecase.NewsItemsUseCase
 
 class FakeNewsItemsUseCase : NewsItemsUseCase {
-	private val sources = mutableListOf<Source>()
-	private val articles = mutableMapOf<String, List<Article>>()
+	private val sources = mutableListOf<NewsSource>()
+	private val articles = mutableMapOf<String, List<ArticleSource>>()
 
-	override suspend fun fetchSources(): GeneralResult<List<Source>> {
+	override suspend fun fetchNews(): GeneralResult<List<NewsSource>> {
 		return if (sources.isNotEmpty()) {
 			GeneralResult.Success(sources)
 		} else {
@@ -20,7 +20,7 @@ class FakeNewsItemsUseCase : NewsItemsUseCase {
 		}
 	}
 
-	override suspend fun fetchArticles(sourceId: String): Pager<Int, Article> {
+	override suspend fun fetchArticles(sourceId: String): Pager<Int, ArticleSource> {
 		val articlesList = articles[sourceId]
 		val pager = Pager(PagingConfig(pageSize = 20)) {
 			FakeArticlePagingSource(articlesList ?: emptyList(), 20)
@@ -28,12 +28,12 @@ class FakeNewsItemsUseCase : NewsItemsUseCase {
 		return pager
 	}
 
-	fun setSources(newSources: List<Source>?) {
+	fun setSources(newSources: List<NewsSource>?) {
 		sources.clear()
 		newSources?.let { sources.addAll(it) }
 	}
 
-	fun setArticles(sourceId: String, newArticles: List<Article>?) {
+	fun setArticles(sourceId: String, newArticles: List<ArticleSource>?) {
 		if (newArticles == null) {
 			articles.remove(sourceId)
 		} else {

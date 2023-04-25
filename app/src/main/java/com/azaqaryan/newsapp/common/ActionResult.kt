@@ -1,6 +1,5 @@
-package com.azaqaryan.newsapp.data
+package com.azaqaryan.newsapp.common
 
-import com.azaqaryan.newsapp.CommonStates
 import com.azaqaryan.newsapp.data.entity.error.NewsAppException
 import retrofit2.Response
 

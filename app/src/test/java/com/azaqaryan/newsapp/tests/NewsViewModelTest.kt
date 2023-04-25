@@ -1,9 +1,9 @@
 package com.azaqaryan.newsapp.tests
 
 import MainCoroutineRule
-import com.azaqaryan.newsapp.CommonStates
+import com.azaqaryan.newsapp.common.CommonStates
 import com.azaqaryan.newsapp.FakeNewsItemsUseCase
-import com.azaqaryan.newsapp.data.entity.Source
+import com.azaqaryan.newsapp.data.entity.NewsSource
 import com.azaqaryan.newsapp.ui.NewsViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -32,8 +32,8 @@ class NewsViewModelTest {
 	@Test
 	fun `fetchSources success`() = mainCoroutineRule.runBlockingTest {
 		val sources = listOf(
-			Source("source1", "Source 1", "url1", "desc1"),
-			Source("source2", "Source 2","url2", "desc2")
+			NewsSource("source1", "NewsSource 1", "url1", "desc1"),
+			NewsSource("source2", "NewsSource 2","url2", "desc2")
 		)
 		fakeNewsItemsUseCase.setSources(sources)
 		viewModel.fetchSources()
@@ -63,7 +63,7 @@ class NewsViewModelTest {
 		assertEquals(expectedStates, actualStates)
 
 		// Check that the sources flow emits an empty list
-		val expectedSources = emptyList<Source>()
+		val expectedSources = emptyList<NewsSource>()
 		val actualSources = viewModel.sources.first()
 		assertEquals(expectedSources, actualSources)
 	}

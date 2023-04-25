@@ -1,11 +1,10 @@
-package com.azaqaryan.newsapp.data
+package com.azaqaryan.newsapp.common
 
 object Constants {
 
 	object ResponseCodes {
 		const val USER_EMAIL_EXISTS_CODE = 409
 		const val AUTHENTICATION_ERROR_CODE = 401
-		const val AUTHENTICATION_ERROR_MINIMUM_VALUE = 400
 		const val USER_BLOCKED_CODE = 502
 	}
 

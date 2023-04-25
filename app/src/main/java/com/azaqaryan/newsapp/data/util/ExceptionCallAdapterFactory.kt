@@ -1,8 +1,6 @@
-package com.azaqaryan.newsapp.data.entity.error
+package com.azaqaryan.newsapp.data.util
 
-import com.azaqaryan.newsapp.data.ActionResult
-import com.azaqaryan.newsapp.data.mapException
-import com.azaqaryan.newsapp.data.mapResponse
+import com.azaqaryan.newsapp.common.ActionResult
 import okhttp3.Request
 import okio.Timeout
 import retrofit2.*

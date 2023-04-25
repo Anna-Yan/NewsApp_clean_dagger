@@ -1,6 +1,6 @@
 package com.azaqaryan.newsapp.data.entity
 
-data class SourceResponse(
+data class NewsSourceResponse(
 	val status: String?,
-	val sources: List<Source>?,
+	val sources: List<NewsSource>?,
 )

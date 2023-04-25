@@ -11,10 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azaqaryan.newsapp.appComponent
-import com.azaqaryan.newsapp.CommonStates
+import com.azaqaryan.newsapp.common.CommonStates
 import com.azaqaryan.newsapp.R
 import com.azaqaryan.newsapp.databinding.FragmentNewsBinding
 import com.azaqaryan.newsapp.showSnackBar
@@ -35,8 +34,7 @@ class NewsFragment : Fragment() {
 
 	private val newsAdapter by lazy {
 		NewsAdapter { newsSource ->
-			val action = NewsFragmentDirections.actionNewsFragmentToArticlesFragment(newsSource.id ?: "")
-			findNavController().navigate(action)
+			viewModel.navigateToArticleScreen(newsSource.id ?: "")
 		}
 	}
 
@@ -82,7 +80,6 @@ class NewsFragment : Fragment() {
 				}
 			}
 		}
-		viewModel.fetchSources()
 	}
 
 	override fun onAttach(context: Context) {

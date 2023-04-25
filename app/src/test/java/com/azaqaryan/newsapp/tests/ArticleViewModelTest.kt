@@ -1,6 +1,5 @@
-import com.azaqaryan.newsapp.FakeArticlePagingSource
 import com.azaqaryan.newsapp.FakeNewsItemsUseCase
-import com.azaqaryan.newsapp.data.entity.Article
+import com.azaqaryan.newsapp.data.entity.ArticleSource
 import com.azaqaryan.newsapp.ui.ArticlesViewModel
 import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,8 +32,8 @@ class ArticlesViewModelTest {
 	fun `fetchArticles success`() = mainCoroutineRule.runBlockingTest {
 		// Prepare test data
 		val articles = listOf(
-			Article("article1", "Article 1", "url1", "desc1", "1"),
-			Article("article2", "Article 2", "url2", "desc2", "2")
+			ArticleSource("article1", "ArticleSource 1", "url1", "desc1", "1"),
+			ArticleSource("article2", "ArticleSource 2", "url2", "desc2", "2")
 		)
 		fakeNewsItemsUseCase.setArticles(fakeSourceId, articles)
 		val result = articlesViewModel.fetchArticles()
@@ -48,7 +47,7 @@ class ArticlesViewModelTest {
 		fakeNewsItemsUseCase.setArticles(fakeSourceId, null)
 
 		// Check that the articles flow emits an empty list
-		val expectedArticles = emptyList<Article>()
+		val expectedArticles = emptyList<ArticleSource>()
 		val actualArticles = articlesViewModel.fetchArticles().first()
 		assertEquals(expectedArticles, actualArticles)
 	}

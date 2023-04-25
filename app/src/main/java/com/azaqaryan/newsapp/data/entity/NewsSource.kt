@@ -1,6 +1,6 @@
 package com.azaqaryan.newsapp.data.entity
 
-data class Source(
+data class NewsSource(
 	val id: String?,
 	val name: String?,
 	val url: String?,

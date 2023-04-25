@@ -1,6 +1,6 @@
 package com.azaqaryan.newsapp.data.entity.error
 
-import com.azaqaryan.newsapp.CommonStates
+import com.azaqaryan.newsapp.common.CommonStates
 
 class NewsAppException(
 	val messageResId: Int? = null,

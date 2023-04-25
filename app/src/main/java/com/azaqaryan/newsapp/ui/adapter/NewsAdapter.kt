@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.azaqaryan.newsapp.data.entity.Source
 import com.azaqaryan.newsapp.databinding.ItemNewsListBinding
+import com.azaqaryan.newsapp.domain.entity.News
 
-class NewsAdapter(private val onItemClick: (Source) -> Unit) :
-	ListAdapter<Source, NewsAdapter.NewsSourceViewHolder>(NewsSourceDiffCallback()) {
+class NewsAdapter(private val onItemClick: (News) -> Unit) :
+	ListAdapter<News, NewsAdapter.NewsSourceViewHolder>(NewsSourceDiffCallback()) {
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsSourceViewHolder {
 		val binding = ItemNewsListBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -22,7 +22,7 @@ class NewsAdapter(private val onItemClick: (Source) -> Unit) :
 	}
 
 	inner class NewsSourceViewHolder(private val binding: ItemNewsListBinding) : RecyclerView.ViewHolder(binding.root) {
-		fun bind(source: Source) {
+		fun bind(source: News) {
 			binding.sourceTitle.text = source.name
 			binding.sourceDescription.text = source.description
 			binding.root.setOnClickListener { onItemClick(source) }
@@ -30,12 +30,12 @@ class NewsAdapter(private val onItemClick: (Source) -> Unit) :
 	}
 }
 
-class NewsSourceDiffCallback : DiffUtil.ItemCallback<Source>() {
-	override fun areItemsTheSame(oldItem: Source, newItem: Source): Boolean {
+class NewsSourceDiffCallback : DiffUtil.ItemCallback<News>() {
+	override fun areItemsTheSame(oldItem: News, newItem: News): Boolean {
 		return oldItem.id == newItem.id
 	}
 
-	override fun areContentsTheSame(oldItem: Source, newItem: Source): Boolean {
+	override fun areContentsTheSame(oldItem: News, newItem: News): Boolean {
 		return oldItem == newItem
 	}
 }

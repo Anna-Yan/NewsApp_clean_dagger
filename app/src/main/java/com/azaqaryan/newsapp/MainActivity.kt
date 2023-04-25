@@ -7,7 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.azaqaryan.newsapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), NavHostControllerProvider {
 	private var binding: ActivityMainBinding? = null
 	private lateinit var navController: NavController
 
@@ -30,5 +30,9 @@ class MainActivity : AppCompatActivity() {
 	}
 	override fun onSupportNavigateUp(): Boolean {
 		return navController.navigateUp() || super.onSupportNavigateUp()
+	}
+
+	override fun provideNavController(): NavController {
+		return navController
 	}
 }
