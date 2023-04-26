@@ -1,23 +1,21 @@
-package com.azaqaryan.newsapp.ui
+package com.azaqaryan.newsapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavController
 import com.azaqaryan.newsapp.common.CommonStates
 import com.azaqaryan.newsapp.common.GeneralResult
-import com.azaqaryan.newsapp.data.entity.NewsSource
 import com.azaqaryan.newsapp.domain.entity.News
 import com.azaqaryan.newsapp.domain.usecase.NewsItemsUseCase
-import com.azaqaryan.newsapp.ui.news.NewsFragmentDirections
+import com.azaqaryan.newsapp.ui.BaseViewModel
+import com.azaqaryan.newsapp.ui.pages.NewsFragmentDirections
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class NewsViewModel @Inject constructor(
-	private val navController: NavController,
 	private val newsUseCase: NewsItemsUseCase,
-) : ViewModel() {
+) : BaseViewModel() {
 
 	private val _state = MutableStateFlow(CommonStates.NORMAL)
 	val state
@@ -55,13 +53,16 @@ class NewsViewModel @Inject constructor(
 		}
 	}
 
-	fun navigateToArticleScreen(id: String) {
+	fun onArticleClicked(id: String) {
 		val action = NewsFragmentDirections.actionNewsFragmentToArticlesFragment(id)
-		navController.navigate(action)
+		navigate(action)
 	}
 
-	class Factory @Inject constructor(
-		private val navController: NavController,
+	fun onBackClicked() {
+		navigateBack()
+	}
+
+	class NewsFactory @Inject constructor(
 		private val newsItemsUseCase: NewsItemsUseCase,
 	) : ViewModelProvider.Factory {
 
@@ -69,7 +70,7 @@ class NewsViewModel @Inject constructor(
 		override fun <T : ViewModel> create(modelClass: Class<T>): T {
 			return when {
 				modelClass.isAssignableFrom(NewsViewModel::class.java) ->
-					NewsViewModel(navController, newsItemsUseCase) as T
+					NewsViewModel(newsItemsUseCase) as T
 				else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
 			}
 		}

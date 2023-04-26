@@ -2,18 +2,18 @@ package com.azaqaryan.newsapp
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.azaqaryan.newsapp.data.entity.ArticleSource
+import com.azaqaryan.newsapp.domain.entity.Article
 
 class FakeArticlePagingSource(
-	private val articles: List<ArticleSource>,
+	private val articles: List<Article>,
 	private val pageSize: Int
-) : PagingSource<Int, ArticleSource>() {
+) : PagingSource<Int, Article>() {
 
-	override fun getRefreshKey(state: PagingState<Int, ArticleSource>): Int? {
+	override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
 		return state.anchorPosition
 	}
 
-	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleSource> {
+	override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Article> {
 		return try {
 			val page = params.key ?: 1
 			val startIndex = (page - 1) * pageSize

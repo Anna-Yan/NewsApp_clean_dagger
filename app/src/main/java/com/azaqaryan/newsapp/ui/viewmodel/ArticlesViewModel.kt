@@ -1,4 +1,4 @@
-package com.azaqaryan.newsapp.ui
+package com.azaqaryan.newsapp.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -7,6 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.azaqaryan.newsapp.domain.entity.Article
 import com.azaqaryan.newsapp.domain.usecase.ArticleUseCase
+import com.azaqaryan.newsapp.ui.BaseViewModel
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class ArticlesViewModel @Inject constructor(
 	private val sourceId: String,
 	private val articleUseCase: ArticleUseCase,
-) : ViewModel() {
+) : BaseViewModel() {
 
 	suspend fun fetchArticles(): Flow<PagingData<Article>> =
 		articleUseCase.fetchArticles(sourceId).flow.cachedIn(

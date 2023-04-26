@@ -1,15 +1,17 @@
-package com.azaqaryan.newsapp.ui.news
+package com.azaqaryan.newsapp.ui.pages
 
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,7 +20,8 @@ import com.azaqaryan.newsapp.appComponent
 import com.azaqaryan.newsapp.databinding.FragmentArticlesBinding
 import com.azaqaryan.newsapp.makeToast
 import com.azaqaryan.newsapp.showSnackBar
-import com.azaqaryan.newsapp.ui.ArticlesViewModel
+import com.azaqaryan.newsapp.ui.NavigationEvent
+import com.azaqaryan.newsapp.ui.viewmodel.ArticlesViewModel
 import com.azaqaryan.newsapp.ui.adapter.ArticleAdapter
 import com.azaqaryan.newsapp.ui.adapter.ArticleLoadStateAdapter
 import kotlinx.coroutines.flow.*
@@ -90,7 +93,30 @@ class ArticlesFragment : Fragment() {
 				else -> {}
 			}
 		}
-}
+
+		viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+			viewModel.navigation.collect { event ->
+				event?.let {
+					when (it) {
+						is NavigationEvent.ToDirection -> {
+							findNavController().navigate(it.directions)
+						}
+						is NavigationEvent.Back -> {
+							findNavController().popBackStack()
+						}
+					}
+					viewModel.clear()
+				}
+			}
+		}
+
+		requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+			override fun handleOnBackPressed() {
+				viewModel.navigateBack()
+			}
+		})
+
+	}
 
 	override fun onDestroy() {
 		super.onDestroy()

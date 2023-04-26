@@ -6,13 +6,16 @@ import com.azaqaryan.newsapp.common.CommonStates
 import com.azaqaryan.newsapp.common.GeneralResult
 import com.azaqaryan.newsapp.data.entity.ArticleSource
 import com.azaqaryan.newsapp.data.entity.NewsSource
+import com.azaqaryan.newsapp.domain.entity.Article
+import com.azaqaryan.newsapp.domain.entity.News
+import com.azaqaryan.newsapp.domain.usecase.ArticleUseCase
 import com.azaqaryan.newsapp.domain.usecase.NewsItemsUseCase
 
-class FakeNewsItemsUseCase : NewsItemsUseCase {
-	private val sources = mutableListOf<NewsSource>()
-	private val articles = mutableMapOf<String, List<ArticleSource>>()
+class FakeNewsItemsUseCase : NewsItemsUseCase, ArticleUseCase {
+	private val sources = mutableListOf<News>()
+	private val articles = mutableMapOf<String, List<Article>>()
 
-	override suspend fun fetchNews(): GeneralResult<List<NewsSource>> {
+	override suspend fun fetchNews(): GeneralResult<List<News>> {
 		return if (sources.isNotEmpty()) {
 			GeneralResult.Success(sources)
 		} else {
@@ -20,7 +23,7 @@ class FakeNewsItemsUseCase : NewsItemsUseCase {
 		}
 	}
 
-	override suspend fun fetchArticles(sourceId: String): Pager<Int, ArticleSource> {
+	override suspend fun fetchArticles(sourceId: String): Pager<Int, Article> {
 		val articlesList = articles[sourceId]
 		val pager = Pager(PagingConfig(pageSize = 20)) {
 			FakeArticlePagingSource(articlesList ?: emptyList(), 20)
@@ -28,12 +31,12 @@ class FakeNewsItemsUseCase : NewsItemsUseCase {
 		return pager
 	}
 
-	fun setSources(newSources: List<NewsSource>?) {
+	fun setSources(newSources: List<News>?) {
 		sources.clear()
 		newSources?.let { sources.addAll(it) }
 	}
 
-	fun setArticles(sourceId: String, newArticles: List<ArticleSource>?) {
+	fun setArticles(sourceId: String, newArticles: List<Article>?) {
 		if (newArticles == null) {
 			articles.remove(sourceId)
 		} else {

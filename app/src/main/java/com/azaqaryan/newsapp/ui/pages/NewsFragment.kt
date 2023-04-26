@@ -1,4 +1,4 @@
-package com.azaqaryan.newsapp.ui.news
+package com.azaqaryan.newsapp.ui.pages
 
 import android.content.Context
 import android.os.Bundle
@@ -11,13 +11,15 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.azaqaryan.newsapp.appComponent
 import com.azaqaryan.newsapp.common.CommonStates
 import com.azaqaryan.newsapp.R
 import com.azaqaryan.newsapp.databinding.FragmentNewsBinding
 import com.azaqaryan.newsapp.showSnackBar
-import com.azaqaryan.newsapp.ui.NewsViewModel
+import com.azaqaryan.newsapp.ui.NavigationEvent
+import com.azaqaryan.newsapp.ui.viewmodel.NewsViewModel
 import com.azaqaryan.newsapp.ui.adapter.NewsAdapter
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,14 +29,14 @@ class NewsFragment : Fragment() {
 	private var binding: FragmentNewsBinding? = null
 
 	@Inject
-	lateinit var viewModelFactory: NewsViewModel.Factory
+	lateinit var viewModelFactory: NewsViewModel.NewsFactory
 	private val viewModel: NewsViewModel by viewModels {
 		viewModelFactory
 	}
 
 	private val newsAdapter by lazy {
 		NewsAdapter { newsSource ->
-			viewModel.navigateToArticleScreen(newsSource.id ?: "")
+			viewModel.onArticleClicked(newsSource.id ?: "")
 		}
 	}
 
@@ -80,6 +82,22 @@ class NewsFragment : Fragment() {
 				}
 			}
 		}
+
+		viewLifecycleOwner.lifecycleScope.launchWhenStarted {
+			viewModel.navigation.collect { event ->
+				event?.let {
+					when (it) {
+						is NavigationEvent.ToDirection -> {
+							findNavController().navigate(it.directions)
+						}
+						is NavigationEvent.Back -> {
+							findNavController().popBackStack()
+						}
+					}
+					viewModel.clear()
+				}
+			}
+		}
 	}
 
 	override fun onAttach(context: Context) {
@@ -91,4 +109,5 @@ class NewsFragment : Fragment() {
 		super.onDestroy()
 		binding = null
 	}
+
 }
