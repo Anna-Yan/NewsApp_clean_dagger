@@ -1,4 +1,3 @@
-
 package com.azaqaryan.newsapp.tests.new
 
 import com.azaqaryan.newsapp.common.CommonStates
@@ -17,6 +16,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.azaqaryan.newsapp.data.entity.error.NewsAppException
 import kotlinx.coroutines.flow.first
 
 @ExperimentalCoroutinesApi
@@ -39,23 +39,39 @@ class NewsViewModelTest {
 
 
 	@Test
-	fun `Success state works`() = runTest{
-		//Given
-		val sources = listOf(
-			News("source1", "NewsSource 1", "url1", "desc1"),
-			News("source2", "NewsSource 2", "url2", "desc2")
-		)
+	fun `fetchSources should update state to Normal and update _sources with result data when NewsUseCase returns Success`() =
+		runTest {
+			//Given
+			val sources = listOf(
+				News("source1", "NewsSource 1", "url1", "desc1"),
+				News("source2", "NewsSource 2", "url2", "desc2")
+			)
+			`when`(newsUseCase.fetchNews()).thenReturn(
+				GeneralResult.Success(sources)
+			)
+
+			//When
+			newsUseCase.fetchNews()
+			testDispatcher.scheduler.advanceUntilIdle()
+
+			//Then
+			assert(viewModel.state.value == CommonStates.NORMAL)
+			assert(viewModel.sources.first() == sources)
+		}
+
+	@Test
+	fun `fetchSources should update state to NotFound when NewsUseCase returns Error`() = runTest {
+		// GIVEN
 		`when`(newsUseCase.fetchNews()).thenReturn(
-			GeneralResult.Success(sources)
+			GeneralResult.Error(NewsAppException(message = "News not found"))
 		)
 
-		//When
+		// WHEN
 		newsUseCase.fetchNews()
 		testDispatcher.scheduler.advanceUntilIdle()
 
-		//Then
-		assert(viewModel.state.value == CommonStates.NORMAL)
-		assert(viewModel.sources.first() == sources)
+		// THEN
+		assert(viewModel.state.value == CommonStates.NOT_FOUND)
 	}
 
 	@After
